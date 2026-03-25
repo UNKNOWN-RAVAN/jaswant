@@ -1,14 +1,19 @@
 {
   "version": 2,
-  "functions": {
-    "api/*.js": {
-      "maxDuration": 30
+  "builds": [
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
     },
-    "api/**/*.js": {
-      "maxDuration": 30
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
+    {
+      "handle": "filesystem"
+    },
     {
       "src": "/api/(.*)",
       "dest": "/api/$1"
