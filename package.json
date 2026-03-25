@@ -5,17 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "deploy": "vercel deploy --prod"
+    "deploy": "vercel deploy --prod",
+    "build": "echo 'Build completed'"
   },
   "dependencies": {
-    "mongodb": "^5.8.0",
+    "mongodb": "^6.3.0",
     "bcryptjs": "^2.4.3",
-    "crypto-js": "^4.1.1"
+    "crypto-js": "^4.2.0"
   },
   "devDependencies": {
     "@vercel/node": "^3.0.0"
   },
   "engines": {
-    "node": "22.x"
+    "node": "20.x"
   }
 }
