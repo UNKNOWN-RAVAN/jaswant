@@ -41,6 +41,7 @@ async function fetchUserBatches(apiBase, userId, token) {
 }
 
 export default async function handler(req, res) {
+  // CORS headers - HAR FILE ME DALO
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -53,7 +54,7 @@ export default async function handler(req, res) {
     if (!credentials) return res.status(400).json({ error: 'Credentials required' });
 
     const [mobile, password] = credentials.split('*');
-    if (!mobile || !password) return res.status(400).json({ error: 'Invalid format' });
+    if (!mobile || !password) return res.status(400).json({ error: 'Invalid format. Use: MOBILE*PASSWORD' });
 
     const apiBase = api || 'https://rozgarapinew.teachx.in';
 
@@ -72,12 +73,12 @@ export default async function handler(req, res) {
       authResult = await authResponse.json();
     } catch (error) {
       await logLoginActivity(mobile, 'mobile', 'failed');
-      return res.status(500).json({ error: 'Authentication service unavailable' });
+      return res.status(500).json({ error: 'Authentication service unavailable', details: error.message });
     }
 
     if (authResult.status !== 200) {
       await logLoginActivity(mobile, 'mobile', 'failed');
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Invalid credentials', status: authResult.status });
     }
 
     const token = authResult.data.token;
@@ -112,6 +113,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Login error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error', message: error.message });
   }
 }
